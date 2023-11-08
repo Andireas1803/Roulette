@@ -143,7 +143,8 @@ public final class MessageManager {
         REQUEST_CANCELLED("other.request-cancelled"),
         REQUEST_INVALID("other.request-invalid"),
         NPC_RENAMED("other.npc-renamed"),
-        NPC_TEXTURIZED("other.npc-texturized");
+        NPC_TEXTURIZED("other.npc-texturized"),
+        MAX_USED("other.max-used");
 
         private final RoulettePlugin plugin = JavaPlugin.getPlugin(RoulettePlugin.class);
         private final String path;

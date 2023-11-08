@@ -570,6 +570,7 @@ public final class Game {
         for (Player player : players.keySet()) {
             Bet bet = players.get(player);
             Slot slot = bet.getSlot();
+            this.plugin.getPlayerManager().addUse(player.getUniqueId());
 
             // Check for single numbers or slots with more than 1 number.
             if (slot == winner || slot.contains(winner)) {
@@ -883,6 +884,23 @@ public final class Game {
             Player player = entry.getKey();
             Bet bet = entry.getValue();
 
+            if (!player.hasPermission("roulette.use.*")) {
+                int useAmount = 0;
+                for (int i = 50; i >= 1; i--) {
+                    if (player.hasPermission("roulette.use." + i)) {
+                        useAmount = i;
+                        break;
+                    }
+                }
+                int used = this.plugin.getPlayerManager().getByUniqueId(player.getUniqueId());
+                if (used >= useAmount) {
+                    int finalUseAmount = useAmount;
+                    plugin.getMessageManager().send(player, MessageManager.Message.MAX_USED, message -> message.replace("%amount%", String.valueOf(finalUseAmount)));
+                    iterator.remove();
+                    remove(player, true);
+                    continue;
+                }
+            }
             // Remove player only if prison rule isn't enabled (or the selected slot doesn't apply for that rule).
             if (!isRuleEnabled(GameRule.EN_PRISON) || !bet.getSlot().applyForRules() || bet.isWon() || bet.isEnPrison() || !winner.isZero()) {
                 // Remove hologram and chip.

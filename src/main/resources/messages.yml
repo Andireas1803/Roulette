@@ -120,3 +120,4 @@ other:
   request-invalid: "&cThe given input is invalid!"
   npc-renamed: "&6The name of the NPC has been changed!"
   npc-texturized: "&6The texture of the NPC has been changed!"
+  max-used: "&cYou have used the maximum amount of games in one day!"

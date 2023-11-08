@@ -14,9 +14,11 @@ import me.matsubara.roulette.RoulettePlugin;
 import me.matsubara.roulette.event.PlayerRouletteEnterEvent;
 import me.matsubara.roulette.game.Game;
 import me.matsubara.roulette.manager.MessageManager;
+import me.matsubara.roulette.manager.PlayerManager;
 import me.matsubara.roulette.model.Model;
 import me.matsubara.roulette.model.stand.PacketStand;
 import org.apache.commons.lang3.ArrayUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -161,6 +163,22 @@ public final class UseEntity extends PacketAdapter {
                 if (!plugin.getEconomy().has(player, minAmount)) {
                     messages.send(player, MessageManager.Message.MIN_REQUIRED, message -> message.replace("%money%", String.valueOf(minAmount)));
                     return;
+                }
+
+                if (!player.hasPermission("roulette.use.*")) {
+                    int useAmount = 0;
+                    for (int i = 50; i >= 1; i--) {
+                        if (player.hasPermission("roulette.use." + i)) {
+                            useAmount = i;
+                            break;
+                        }
+                    }
+                    int used = this.plugin.getPlayerManager().getByUniqueId(player.getUniqueId());
+                    if (used >= useAmount) {
+                        int finalUseAmount = useAmount;
+                        messages.send(player, MessageManager.Message.MAX_USED, message -> message.replace("%amount%", String.valueOf(finalUseAmount)));
+                        return;
+                    }
                 }
 
                 // We need to do this part sync to prevent issues.

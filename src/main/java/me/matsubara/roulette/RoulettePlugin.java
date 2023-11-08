@@ -51,6 +51,7 @@ public final class RoulettePlugin extends JavaPlugin {
     private MessageManager messageManager;
     private StandManager standManager;
     private WinnerManager winnerManager;
+    private PlayerManager playerManager;
 
     // NPC Pool.
     private NPCPool npcPool;
@@ -126,6 +127,7 @@ public final class RoulettePlugin extends JavaPlugin {
         // Initialize managers.
         chipManager = new ChipManager(this);
         configManager = new ConfigManager(this);
+        playerManager = new PlayerManager(this);
 
         int distance = Math.max(1, configManager.getRenderDistance());
 
